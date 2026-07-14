@@ -116,13 +116,38 @@
     .copyBox p{color:#c6c3d0;margin:0 0 18px}
     .worldVisual{
       min-height:560px;border:1px solid var(--line);position:relative;overflow:hidden;
-      background:linear-gradient(0deg,rgba(8,8,14,.8),transparent 50%),url('project-zero-alpha.jpeg') 72% center/cover no-repeat
+      background:
+        linear-gradient(180deg,rgba(11,11,21,.08),rgba(9,9,17,.88)),
+        repeating-linear-gradient(90deg,transparent 0 74px,rgba(255,255,255,.055) 75px),
+        repeating-linear-gradient(0deg,transparent 0 74px,rgba(255,255,255,.045) 75px),
+        radial-gradient(circle at 68% 28%,rgba(183,176,255,.22),transparent 34%),
+        linear-gradient(135deg,#25243d,#11111e 62%,#090910);
     }
     .worldVisual::before{
-      content:"WORLD FILE / 001";position:absolute;left:24px;top:22px;font-size:9px;letter-spacing:.18em;color:#d7d3ea
+      content:"WORLD FILE / 001  —  CITY RECORD";position:absolute;left:24px;top:22px;
+      font-size:9px;letter-spacing:.18em;color:#d7d3ea
     }
     .worldVisual::after{
-      content:"RAVENHARD";position:absolute;left:24px;bottom:24px;font-size:clamp(34px,5vw,72px);font-weight:900;letter-spacing:-.05em
+      content:"RAVENHARD";position:absolute;left:24px;bottom:24px;
+      font-size:clamp(34px,5vw,72px);font-weight:900;letter-spacing:-.05em
+    }
+    .worldVisual__skyline{
+      position:absolute;left:7%;right:7%;bottom:105px;height:55%;
+      border-bottom:2px solid rgba(255,255,255,.45);
+      background:
+        linear-gradient(90deg,
+          transparent 0 3%,rgba(255,255,255,.11) 3% 9%,transparent 9% 12%,
+          rgba(255,255,255,.08) 12% 19%,transparent 19% 23%,
+          rgba(255,255,255,.14) 23% 30%,transparent 30% 33%,
+          rgba(255,255,255,.09) 33% 44%,transparent 44% 48%,
+          rgba(255,255,255,.13) 48% 58%,transparent 58% 63%,
+          rgba(255,255,255,.08) 63% 71%,transparent 71% 75%,
+          rgba(255,255,255,.12) 75% 87%,transparent 87%);
+      clip-path:polygon(0 74%,4% 74%,4% 54%,10% 54%,10% 66%,15% 66%,15% 34%,23% 34%,23% 58%,29% 58%,29% 18%,37% 18%,37% 68%,44% 68%,44% 42%,52% 42%,52% 8%,59% 8%,59% 63%,67% 63%,67% 27%,75% 27%,75% 57%,83% 57%,83% 39%,91% 39%,91% 70%,100% 70%,100% 100%,0 100%);
+    }
+    .worldVisual__mark{
+      position:absolute;right:24px;bottom:28px;width:72px;height:72px;border:1px solid rgba(255,255,255,.28);
+      border-radius:50%;display:grid;place-items:center;text-align:center;font-size:9px;letter-spacing:.12em;color:#cbc7dc
     }
 
     .characters{background:#f0efe9;color:#111}
@@ -141,9 +166,49 @@
       display:grid;grid-template-columns:1.1fr .9fr
     }
     .characterArt{
+      min-height:650px;position:relative;overflow:hidden;transition:opacity .2s ease;
       background:linear-gradient(90deg,transparent 64%,#dedce7),url('project-zero-alpha.jpeg') center/cover no-repeat;
-      min-height:650px;filter:saturate(.85)
+      filter:saturate(.85)
     }
+    .characterArt::after{
+      content:"THE HERMIT";position:absolute;left:24px;bottom:22px;padding:10px 12px;
+      background:rgba(10,10,16,.82);color:#fff;font-size:10px;letter-spacing:.17em
+    }
+    .characterArt[data-character="FLORA"],
+    .characterArt[data-character="KANE"],
+    .characterArt[data-character="COMING SOON"]{
+      filter:none;display:grid;place-items:center;
+    }
+    .characterArt[data-character="FLORA"]{
+      background:
+        radial-gradient(circle at 72% 25%,rgba(255,255,255,.9) 0 2px,transparent 3px),
+        radial-gradient(circle at 24% 70%,rgba(255,255,255,.7) 0 2px,transparent 3px),
+        radial-gradient(circle at 58% 62%,rgba(255,255,255,.5) 0 1px,transparent 2px),
+        linear-gradient(135deg,#e6e1ef,#b6a9d5 48%,#6d658e);
+    }
+    .characterArt[data-character="KANE"]{
+      background:
+        repeating-linear-gradient(135deg,transparent 0 24px,rgba(255,255,255,.08) 25px 26px),
+        radial-gradient(circle at 30% 35%,rgba(255,255,255,.24),transparent 25%),
+        linear-gradient(135deg,#d7d2cb,#817b78 50%,#29282c);
+    }
+    .characterArt[data-character="COMING SOON"]{
+      background:
+        linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px),
+        linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
+        linear-gradient(135deg,#c6c4cf,#7d798d);
+      background-size:34px 34px,34px 34px,auto;
+    }
+    .characterArt[data-character="FLORA"]::before,
+    .characterArt[data-character="KANE"]::before,
+    .characterArt[data-character="COMING SOON"]::before{
+      content:"OFFICIAL ARTWORK\A NOT RELEASED";
+      white-space:pre;text-align:center;font-weight:900;font-size:clamp(24px,4vw,54px);
+      line-height:.95;letter-spacing:-.04em;color:rgba(17,17,24,.72)
+    }
+    .characterArt[data-character="FLORA"]::after{content:"FLORA / PROFILE PREVIEW"}
+    .characterArt[data-character="KANE"]::after{content:"KANE / PROFILE PREVIEW"}
+    .characterArt[data-character="COMING SOON"]::after{content:"ADDITIONAL FILE / LOCKED"}
     .characterInfo{padding:60px 46px;align-self:center}
     .characterInfo h3{font-size:clamp(48px,6vw,90px);letter-spacing:-.06em}
     .characterInfo p{color:#444}
@@ -151,10 +216,50 @@
     .characterMeta div{background:#eee;padding:18px}
     .characterMeta strong{display:block;font-size:10px;letter-spacing:.14em;color:#777;margin-bottom:7px}
 
+
+    .story{
+      background:
+        linear-gradient(180deg,rgba(10,10,18,.2),rgba(10,10,18,.92)),
+        radial-gradient(circle at 75% 28%,rgba(145,136,220,.2),transparent 34%),
+        #12111f;
+    }
+    .storyIntro{max-width:840px}
+    .storyTimeline{
+      position:relative;margin-top:72px;padding-left:74px;border-left:1px solid var(--line);
+      display:grid;gap:18px
+    }
+    .storyTimeline::before{
+      content:"";position:absolute;left:-4px;top:0;width:7px;height:7px;border-radius:50%;
+      background:var(--violet);box-shadow:0 0 22px rgba(185,178,255,.8)
+    }
+    .storyNode{
+      position:relative;display:grid;grid-template-columns:150px 1fr;gap:30px;
+      padding:30px;border:1px solid var(--line);background:rgba(255,255,255,.025);
+      transition:transform .3s ease,background .3s ease,border-color .3s ease
+    }
+    .storyNode:hover{
+      transform:translateX(10px);background:rgba(255,255,255,.055);
+      border-color:rgba(185,178,255,.38)
+    }
+    .storyNode::before{
+      content:"";position:absolute;left:-80px;top:42px;width:11px;height:11px;border-radius:50%;
+      background:#11111d;border:2px solid var(--violet)
+    }
+    .storyNode__index{
+      color:#777486;font-size:10px;letter-spacing:.18em;padding-top:6px
+    }
+    .storyNode h3{font-size:clamp(28px,4vw,52px);letter-spacing:-.045em}
+    .storyNode p{margin:12px 0 0;color:var(--muted);max-width:680px}
+    .storyNode--locked{opacity:.55}
+    .storyNode--locked::after{
+      content:"LOCKED";position:absolute;right:22px;top:22px;font-size:9px;letter-spacing:.18em;
+      border:1px solid var(--line);padding:8px 10px
+    }
+
     .features{background:#10101a}
-    .cards{display:grid;grid-template-columns:repeat(4,1fr);margin-top:68px;border:1px solid var(--line)}
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);margin-top:68px;border:1px solid var(--line)}
     .card{padding:30px;min-height:355px;border-right:1px solid var(--line);transition:.3s}
-    .card:last-child{border-right:0}
+    .card:nth-child(3n){border-right:0}.card:nth-child(n+4){border-top:1px solid var(--line)}
     .card:hover{background:#1b1a2e;transform:translateY(-8px)}
     .card small{color:#6f6c80;letter-spacing:.16em}
     .card h3{font-size:28px;margin-top:120px}
@@ -177,6 +282,210 @@
     .newsCard small{color:#746f7e;letter-spacing:.12em}
     .newsCard h3{font-size:30px}
     .newsCard p{color:#555}
+
+
+    .mediaHero{
+      overflow:hidden;
+      isolation:isolate;
+    }
+    .mediaHero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg,transparent 42%,rgba(8,8,14,.86)),
+        linear-gradient(90deg,rgba(10,10,18,.22),transparent 55%);
+      z-index:1;
+    }
+    .mediaHero__meta{
+      position:absolute;
+      left:24px;
+      right:24px;
+      bottom:24px;
+      z-index:2;
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:20px;
+    }
+    .mediaHero__meta h3{
+      font-size:clamp(34px,5vw,72px);
+      letter-spacing:-.055em;
+    }
+    .mediaHero__meta p{
+      max-width:420px;
+      color:#d4d0df;
+      margin:10px 0 0;
+    }
+    .playButton{
+      width:74px;
+      height:74px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.38);
+      background:rgba(10,10,16,.45);
+      color:#fff;
+      display:grid;
+      place-items:center;
+      text-decoration:none;
+      font-size:22px;
+      backdrop-filter:blur(10px);
+      transition:.3s ease;
+      flex:0 0 auto;
+    }
+    .playButton:hover{
+      transform:scale(1.08);
+      background:var(--violet);
+      color:#111;
+      box-shadow:0 0 36px rgba(185,178,255,.32);
+    }
+    .mediaTile{
+      position:relative;
+      overflow:hidden;
+    }
+    .mediaTile::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(135deg,transparent,rgba(185,178,255,.08));
+      opacity:0;
+      transition:.3s ease;
+    }
+    .mediaTile:hover::before{opacity:1}
+    .mediaTile > *{position:relative}
+    .newsCard{
+      position:relative;
+      overflow:hidden;
+      transition:transform .3s ease,box-shadow .3s ease;
+    }
+    .newsCard:hover{
+      transform:translateY(-8px);
+      box-shadow:0 18px 45px rgba(0,0,0,.12);
+    }
+    .newsCard::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:0;
+      width:100%;
+      height:4px;
+      background:linear-gradient(90deg,#111,var(--violet2));
+    }
+    .newsTag{
+      display:inline-block;
+      margin-bottom:14px;
+      padding:7px 9px;
+      border:1px solid rgba(0,0,0,.14);
+      font-size:9px;
+      letter-spacing:.13em;
+    }
+    .roadmap{
+      background:
+        radial-gradient(circle at 72% 22%,rgba(128,119,199,.18),transparent 30%),
+        linear-gradient(180deg,#131320,#0d0d16);
+    }
+    .roadmapTrack{
+      position:relative;
+      margin-top:72px;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      border-top:1px solid var(--line);
+    }
+    .roadmapTrack::before{
+      content:"";
+      position:absolute;
+      top:-1px;
+      left:0;
+      width:24%;
+      height:2px;
+      background:var(--violet);
+      box-shadow:0 0 24px rgba(185,178,255,.5);
+    }
+    .roadmapItem{
+      position:relative;
+      min-height:310px;
+      padding:34px 26px 26px;
+      border-right:1px solid var(--line);
+    }
+    .roadmapItem:last-child{border-right:0}
+    .roadmapItem::before{
+      content:"";
+      position:absolute;
+      top:-7px;
+      left:26px;
+      width:13px;
+      height:13px;
+      border-radius:50%;
+      background:#0d0d16;
+      border:2px solid #777486;
+    }
+    .roadmapItem.current::before{
+      background:var(--violet);
+      border-color:var(--violet);
+      box-shadow:0 0 22px rgba(185,178,255,.75);
+    }
+    .roadmapItem small{
+      color:#706d80;
+      letter-spacing:.17em;
+    }
+    .roadmapItem h3{
+      margin-top:82px;
+      font-size:28px;
+    }
+    .roadmapItem p{
+      color:var(--muted);
+      font-size:13px;
+    }
+    .roadmapItem ul{
+      margin:18px 0 0;
+      padding:0;
+      list-style:none;
+      color:#c7c3d2;
+      font-size:12px;
+      line-height:1.9;
+    }
+    .roadmapItem li::before{
+      content:"—";
+      margin-right:8px;
+      color:var(--violet);
+    }
+    .ctaPanel{
+      margin-top:46px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.025);
+      padding:26px;
+      display:grid;
+      grid-template-columns:1fr auto;
+      align-items:center;
+      gap:24px;
+    }
+    .ctaPanel strong{
+      display:block;
+      font-size:18px;
+      margin-bottom:6px;
+    }
+    .ctaPanel span{
+      color:var(--muted);
+      font-size:12px;
+    }
+    .socialLinks{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .socialLinks a{
+      min-width:120px;
+      padding:12px 16px;
+      border:1px solid var(--line);
+      text-align:center;
+      text-decoration:none;
+      font-size:9px;
+      letter-spacing:.15em;
+      transition:.25s ease;
+    }
+    .socialLinks a:hover{
+      background:#fff;
+      color:#111;
+    }
 
     .faq{background:#0d0d16}
     .faqList{margin-top:64px;border-top:1px solid var(--line)}
@@ -212,8 +521,8 @@
         border:1px solid var(--line);background:rgba(9,9,16,.82);color:#fff
       }
       .split,.characterLayout,.characterStage,.mediaGrid{grid-template-columns:1fr}
-      .cards{grid-template-columns:1fr 1fr}
-      .newsGrid{grid-template-columns:1fr}
+      .cards{grid-template-columns:1fr 1fr}.card:nth-child(3n){border-right:1px solid var(--line)}.card:nth-child(2n){border-right:0}.card:nth-child(n+3){border-top:1px solid var(--line)}
+      .newsGrid{grid-template-columns:1fr}.roadmapTrack{grid-template-columns:1fr 1fr}.roadmapItem:nth-child(2){border-right:0}.roadmapItem:nth-child(n+3){border-top:1px solid var(--line)}
       .hero__shade{background:linear-gradient(0deg,rgba(7,7,14,.95),rgba(7,7,14,.25))}
       .hero{align-items:end;padding-bottom:110px}
       .characterArt{min-height:470px}
@@ -226,7 +535,7 @@
       .hero h1{font-size:68px}
       .hero__top span:last-child{display:none}
       .worldVisual{min-height:420px}
-      .mediaHero{min-height:420px}
+      .mediaHero{min-height:420px}.roadmapTrack{grid-template-columns:1fr}.roadmapItem{border-right:0;border-bottom:1px solid var(--line)}.roadmapItem:last-child{border-bottom:0}.ctaPanel{grid-template-columns:1fr}
     }
     @media(prefers-reduced-motion:reduce){
       html{scroll-behavior:auto}
@@ -251,9 +560,11 @@
       <a href="#home" class="active">HOME</a>
       <a href="#world">WORLD</a>
       <a href="#characters">CHARACTERS</a>
+      <a href="#story">STORY</a>
       <a href="#features">GAMEPLAY</a>
       <a href="#media">MEDIA</a>
       <a href="#news">NEWS</a>
+      <a href="#roadmap">ROADMAP</a>
       <a href="#faq">FAQ</a>
       <a href="#feedback">FEEDBACK</a>
     </nav>
@@ -273,7 +584,15 @@
         <div class="eyebrow">OPEN ALPHA TEST</div>
         <h1>PROJECT<span>ZERO</span></h1>
         <p class="hero__copy">A story-driven action RPG built around exploration, character journeys, combat, and a world waiting to be uncovered.</p>
-        <div class="actions">
+        <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:24px">
+<div style="padding:10px 14px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);font-size:10px;letter-spacing:.15em">
+OPEN ALPHA • VERSION 0.1
+</div>
+<div style="padding:10px 14px;border:1px solid rgba(185,178,255,.35);background:rgba(185,178,255,.08);font-size:10px;letter-spacing:.15em">
+COUNTDOWN • TBA
+</div>
+</div>
+<div class="actions">
           <a class="btn btn--solid" href="#feedback">JOIN THE TEST</a>
           <a class="btn btn--ghost" href="#world">DISCOVER THE WORLD</a>
         </div>
@@ -290,10 +609,10 @@
       <div class="split">
         <div class="copyBox reveal">
           <p>PROJECT ZERO takes place in a fractured world shaped by conflict, memory, and unfinished journeys.</p>
-          <p>The Open Alpha introduces Ravenhard, its people, and the beginning of the protagonist’s path through the unknown.</p>
+          <p>The Open Alpha introduces Ravenhard, its people, and the beginning of the Hermit’s journey through the unknown.</p>
           <p>This section can later be expanded with regions, factions, maps, archives, and interactive world records.</p>
         </div>
-        <div class="worldVisual reveal"></div>
+        <div class="worldVisual reveal"><div class="worldVisual__skyline"></div><div class="worldVisual__mark">CITY<br>001</div></div>
       </div>
     </section>
 
@@ -305,92 +624,264 @@
       </div>
       <div class="characterLayout reveal">
         <div class="characterList">
-          <button class="charBtn active" data-name="PROTAGONIST"><span>01</span><span>PROTAGONIST</span></button>
+          <button class="charBtn active" data-name="THE HERMIT"><span>01</span><span>THE HERMIT</span></button>
           <button class="charBtn" data-name="FLORA"><span>02</span><span>FLORA</span></button>
           <button class="charBtn" data-name="KANE"><span>03</span><span>KANE</span></button>
           <button class="charBtn" data-name="COMING SOON"><span>04</span><span>COMING SOON</span></button>
         </div>
         <div class="characterStage">
-          <div class="characterArt"></div>
+          <div class="characterArt" id="characterArt" data-character="THE HERMIT"></div>
           <div class="characterInfo">
             <div class="eyebrow">CHARACTER PROFILE</div>
-            <h3 id="charName">PROTAGONIST</h3>
-            <p id="charText">A traveler without a complete past. Known by some as a hidden wanderer, the protagonist begins a journey whose destination remains uncertain.</p>
+            <h3 id="charName">THE HERMIT</h3>
+            <p id="charText">A traveler with no memory of the past. Known as the Hermit, they continue onward for a purpose that has not yet been revealed.</p>
             <div class="characterMeta">
-              <div><strong>ROLE</strong>Traveler</div>
-              <div><strong>STATUS</strong>Playable</div>
-              <div><strong>AFFILIATION</strong>Unknown</div>
-              <div><strong>VERSION</strong>Open Alpha</div>
+              <div><strong>ROLE</strong><span id="charRole">Hermit</span></div>
+              <div><strong>STATUS</strong><span id="charStatus">Playable</span></div>
+              <div><strong>AFFILIATION</strong><span id="charAffiliation">Unknown</span></div>
+              <div><strong>VERSION</strong><span id="charVersion">Open Alpha</span></div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
+
+    <section class="story" id="story">
+      <div class="sectionNo">03 / STORY</div>
+      <div class="storyIntro reveal">
+        <div class="eyebrow">JOURNEY RECORD</div>
+        <h2>The first destination<br>is Ravenhard.</h2>
+        <p style="color:var(--muted);max-width:680px">
+          This timeline presents the Open Alpha story structure without revealing major plot details.
+        </p>
+      </div>
+      <div class="storyTimeline">
+        <article class="storyNode reveal">
+          <div class="storyNode__index">RECORD / 00</div>
+          <div>
+            <h3>Prologue</h3>
+            <p>The Hermit enters the journey without a complete memory of the past.</p>
+          </div>
+        </article>
+        <article class="storyNode reveal">
+          <div class="storyNode__index">RECORD / 01</div>
+          <div>
+            <h3>Ravenhard</h3>
+            <p>Meet its people, explore the city, and experience the main chapter included in the Open Alpha.</p>
+          </div>
+        </article>
+        <article class="storyNode storyNode--locked reveal">
+          <div class="storyNode__index">RECORD / 02</div>
+          <div>
+            <h3>The Journey Continues</h3>
+            <p>Future chapters will be revealed after the Open Alpha.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <section class="features" id="features">
-      <div class="sectionNo">03 / GAMEPLAY</div>
+      <div class="sectionNo">04 / GAMEPLAY</div>
       <div class="reveal">
         <div class="eyebrow">OPEN ALPHA CONTENT</div>
         <h2>More than a<br>technical demo.</h2>
       </div>
       <div class="cards">
-        <article class="card reveal"><small>01 / STORY</small><h3>Main Story</h3><p>Experience the opening narrative and the first major arc of the journey.</p></article>
-        <article class="card reveal"><small>02 / WORLD</small><h3>Exploration</h3><p>Enter optional areas, discover interactive objects, treasure, NPCs, and archives.</p></article>
-        <article class="card reveal"><small>03 / ACTION</small><h3>Combat</h3><p>Play the core combat loop and help shape balancing, responsiveness, and encounter design.</p></article>
-        <article class="card reveal"><small>04 / PEOPLE</small><h3>Character Stories</h3><p>Unlock personal stories and learn more about the cast beyond the main chapter.</p></article>
+        <article class="card reveal"><small>01 / STORY</small><h3>Main Story</h3><p>Experience the opening narrative and the Ravenhard chapter included in the Open Alpha.</p></article>
+        <article class="card reveal"><small>02 / WORLD</small><h3>Exploration</h3><p>Enter main and optional areas, interact with the environment, and discover additional content.</p></article>
+        <article class="card reveal"><small>03 / ACTION</small><h3>Combat</h3><p>Play the core combat system and help refine responsiveness, encounters, and balance.</p></article>
+        <article class="card reveal"><small>04 / DISCOVERY</small><h3>Treasure</h3><p>Find treasure and collect rewards while moving through different areas.</p></article>
+        <article class="card reveal"><small>05 / PEOPLE</small><h3>NPC Interaction</h3><p>Talk with characters and discover dialogue, records, and optional moments.</p></article>
+        <article class="card reveal"><small>06 / ARCHIVE</small><h3>Character Stories</h3><p>Explore personal stories that expand the cast beyond the main chapter.</p></article>
       </div>
     </section>
 
     <section class="media" id="media">
-      <div class="sectionNo">04 / MEDIA</div>
+      <div class="sectionNo">05 / MEDIA</div>
       <div class="reveal">
         <div class="eyebrow">INFORMATION ARCHIVE</div>
         <h2>Visual records<br>from development.</h2>
       </div>
       <div class="mediaGrid">
-        <div class="mediaHero reveal"></div>
+        <div class="mediaHero reveal">
+          <div class="mediaHero__meta">
+            <div>
+              <div class="eyebrow">FEATURED / KEY VISUAL 01</div>
+              <h3>Open Alpha</h3>
+              <p>The first promotional artwork introducing the Hermit and the Open Alpha visual identity.</p>
+            </div>
+            <a class="playButton" href="#" aria-label="Trailer coming soon">▶</a>
+          </div>
+        </div>
         <div class="mediaSide">
-          <article class="mediaTile reveal"><div class="eyebrow">TRAILER</div><h3>Open Alpha PV</h3><p>Add a YouTube trailer link here when the video is ready.</p></article>
-          <article class="mediaTile reveal"><div class="eyebrow">GALLERY</div><h3>Gameplay Screenshots</h3><p>Replace this section with real game screenshots as the test approaches.</p></article>
-          <article class="mediaTile reveal"><div class="eyebrow">DOWNLOAD</div><h3>Wallpapers</h3><p>Offer key visuals and character artwork for players to download.</p></article>
+          <article class="mediaTile reveal">
+            <div class="eyebrow">TRAILER</div>
+            <h3>Open Alpha PV</h3>
+            <p>The trailer entry is prepared and can be connected when the video is released.</p>
+          </article>
+          <article class="mediaTile reveal">
+            <div class="eyebrow">GALLERY</div>
+            <h3>Gameplay Archive</h3>
+            <p>Future screenshots can be added without changing the page structure.</p>
+          </article>
+          <article class="mediaTile reveal">
+            <div class="eyebrow">DOWNLOAD</div>
+            <h3>Official Artwork</h3>
+            <p>Key visuals, wallpapers, and character art can be published here later.</p>
+          </article>
         </div>
       </div>
     </section>
 
     <section class="news" id="news">
-      <div class="sectionNo">05 / NEWS</div>
+      <div class="sectionNo">06 / NEWS</div>
       <div class="reveal">
         <div class="eyebrow">NOTICE</div>
         <h2>Development<br>information.</h2>
       </div>
       <div class="newsGrid">
-        <article class="newsCard reveal"><small>2026 / OPEN ALPHA</small><div><h3>Open Alpha Announced</h3><p>No qualification restriction. Everyone will be able to participate.</p></div></article>
-        <article class="newsCard reveal"><small>DEVELOPMENT LOG</small><div><h3>Latest Progress</h3><p>Combat polish, UI improvements, translation cleanup, and performance work.</p></div></article>
-        <article class="newsCard reveal"><small>KNOWN ISSUES</small><div><h3>Test Information</h3><p>Add system requirements, save-data policy, bug reporting, and known issues here.</p></div></article>
+        <article class="newsCard reveal">
+          <small>2026 / OPEN ALPHA</small>
+          <div>
+            <span class="newsTag">TEST NOTICE</span>
+            <h3>Open Alpha Announced</h3>
+            <p>No qualification restriction is planned. Everyone will be able to participate.</p>
+          </div>
+        </article>
+        <article class="newsCard reveal">
+          <small>DEVELOPMENT LOG</small>
+          <div>
+            <span class="newsTag">PROGRESS</span>
+            <h3>Latest Development</h3>
+            <p>Current work focuses on content preparation, website presentation, feedback flow, and final testing.</p>
+          </div>
+        </article>
+        <article class="newsCard reveal">
+          <small>TEST INFORMATION</small>
+          <div>
+            <span class="newsTag">PLAYER GUIDE</span>
+            <h3>Before You Enter</h3>
+            <p>System requirements, download instructions, known issues, and save-data policy will appear here.</p>
+          </div>
+        </article>
+      </div>
+      <div class="ctaPanel reveal">
+        <div>
+          <strong>Follow PROJECT ZERO development</strong>
+          <span>Connect the official social links when they are ready.</span>
+        </div>
+        <div class="socialLinks">
+          <a href="#">X / TWITTER</a>
+          <a href="#">YOUTUBE</a>
+          <a href="#">DISCORD</a>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="roadmap" id="roadmap">
+      <div class="sectionNo">07 / ROADMAP</div>
+      <div class="reveal">
+        <div class="eyebrow">DEVELOPMENT PATH</div>
+        <h2>The project moves<br>one version at a time.</h2>
+      </div>
+      <div class="roadmapTrack">
+        <article class="roadmapItem current reveal">
+          <small>PHASE / 01</small>
+          <h3>Open Alpha</h3>
+          <p>The first public test establishes the foundation for future development.</p>
+          <ul>
+            <li>Main story content</li>
+            <li>Exploration and combat</li>
+            <li>Player feedback survey</li>
+          </ul>
+        </article>
+        <article class="roadmapItem reveal">
+          <small>PHASE / 02</small>
+          <h3>Alpha Updates</h3>
+          <p>Feedback-driven improvements and additional content preparation.</p>
+          <ul>
+            <li>Bug fixes</li>
+            <li>Balance adjustments</li>
+            <li>Interface refinement</li>
+          </ul>
+        </article>
+        <article class="roadmapItem reveal">
+          <small>PHASE / 03</small>
+          <h3>Future Test</h3>
+          <p>A later testing phase will expand the available experience.</p>
+          <ul>
+            <li>More content</li>
+            <li>More characters</li>
+            <li>Broader testing</li>
+          </ul>
+        </article>
+        <article class="roadmapItem reveal">
+          <small>PHASE / 04</small>
+          <h3>To Be Revealed</h3>
+          <p>Dates and version details will be announced only when they are confirmed.</p>
+          <ul>
+            <li>No premature dates</li>
+            <li>Official announcements only</li>
+            <li>Development continues</li>
+          </ul>
+        </article>
       </div>
     </section>
 
     <section class="faq" id="faq">
-      <div class="sectionNo">06 / FAQ</div>
+      <div class="sectionNo">08 / FAQ</div>
       <div class="reveal">
         <div class="eyebrow">TEST INFORMATION</div>
         <h2>Before entering<br>the Open Alpha.</h2>
       </div>
       <div class="faqList reveal">
         <div class="faqItem open"><button class="faqQ">Is the Open Alpha restricted?<span>＋</span></button><div class="faqA"><p>No. The test is planned without qualification restrictions.</p></div></div>
-        <div class="faqItem"><button class="faqQ">Where will the game be available?<span>＋</span></button><div class="faqA"><p>Add the confirmed platform and download method here.</p></div></div>
-        <div class="faqItem"><button class="faqQ">Will save data carry over?<span>＋</span></button><div class="faqA"><p>Add the final save-data policy before release.</p></div></div>
-        <div class="faqItem"><button class="faqQ">How can players report bugs?<span>＋</span></button><div class="faqA"><p>Connect the Survey button to Google Forms or another feedback platform.</p></div></div>
+        <div class="faqItem"><button class="faqQ">Where will the game be available?<span>＋</span></button><div class="faqA"><p>The confirmed platform and official download method will be published before the test opens.</p></div></div>
+        <div class="faqItem"><button class="faqQ">Will save data carry over?<span>＋</span></button><div class="faqA"><p>The save-data policy has not been announced yet. The final rule will be shown before downloading the test.</p></div></div>
+        <div class="faqItem"><button class="faqQ">How can players report bugs?<span>＋</span></button><div class="faqA"><p>A dedicated survey link will be placed on this website for bugs, feedback, and general impressions.</p></div></div>
       </div>
     </section>
 
-    <section class="feedback" id="feedback">
-      <div class="sectionNo">07 / FEEDBACK</div>
+    
+<section class="news" id="devlog">
+  <div class="sectionNo">10 / DEVLOG</div>
+  <div class="reveal">
+    <div class="eyebrow">DEVELOPER LOG</div>
+    <h2>Building<br>PROJECT ZERO.</h2>
+  </div>
+  <div class="newsGrid">
+    <article class="newsCard reveal">
+      <small>ENGINE</small>
+      <div><span class="newsTag">PROGRESS</span><h3>Gameplay</h3><p>Use this card to publish development notes and gameplay improvements.</p></div>
+    </article>
+    <article class="newsCard reveal">
+      <small>ART</small>
+      <div><span class="newsTag">WORKLOG</span><h3>Environment</h3><p>Share environment art, UI progress, and concept updates here.</p></div>
+    </article>
+    <article class="newsCard reveal">
+      <small>COMMUNITY</small>
+      <div><span class="newsTag">FEEDBACK</span><h3>Community</h3><p>Highlight important feedback collected from Open Alpha players.</p></div>
+    </article>
+  </div>
+</section>
+
+<section class="feedback" id="feedback">
+      <div class="sectionNo">11 / FEEDBACK</div>
       <div class="feedbackContent reveal">
         <div class="eyebrow">PLAYER FEEDBACK</div>
         <h2>Your experience<br>changes the next version.</h2>
         <p>Replace the placeholder links below with the real game download and survey URLs when they are ready.</p>
-        <div class="actions">
+        <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:24px">
+<div style="padding:10px 14px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);font-size:10px;letter-spacing:.15em">
+OPEN ALPHA • VERSION 0.1
+</div>
+<div style="padding:10px 14px;border:1px solid rgba(185,178,255,.35);background:rgba(185,178,255,.08);font-size:10px;letter-spacing:.15em">
+COUNTDOWN • TBA
+</div>
+</div>
+<div class="actions">
           <a class="btn btn--solid" href="#">DOWNLOAD — SOON</a>
           <a class="btn btn--ghost" href="#">SURVEY — SOON</a>
         </div>
@@ -433,16 +924,40 @@
     document.querySelectorAll('.faqQ').forEach(q=>q.onclick=()=>q.parentElement.classList.toggle('open'));
 
     const charData={
-      'PROTAGONIST':'A traveler without a complete past. Known by some as a hidden wanderer, the protagonist begins a journey whose destination remains uncertain.',
-      'FLORA':'A gentle presence connected to Ravenhard and its people. Replace this text with Flora’s final official character introduction.',
-      'KANE':'A familiar figure involved in the rebuilding of Ravenhard. Replace this text with Kane’s final official character introduction.',
-      'COMING SOON':'Additional characters will be added as their official profiles and artwork are completed.'
+      'THE HERMIT':{
+        text:'A traveler with no memory of the past. Known as the Hermit, they continue onward for a purpose that has not yet been revealed.',
+        role:'Hermit',status:'Playable',affiliation:'Unknown',version:'Open Alpha'
+      },
+      'FLORA':{
+        text:'Flora’s complete official profile and character artwork have not been published on the website yet.',
+        role:'Undisclosed',status:'Profile Preview',affiliation:'Undisclosed',version:'Open Alpha'
+      },
+      'KANE':{
+        text:'Kane’s complete official profile and character artwork have not been published on the website yet.',
+        role:'Undisclosed',status:'Profile Preview',affiliation:'Undisclosed',version:'Open Alpha'
+      },
+      'COMING SOON':{
+        text:'Additional character files will be unlocked after their official artwork and profiles are ready.',
+        role:'Classified',status:'Locked',affiliation:'Undisclosed',version:'Future Update'
+      }
     };
+    const characterArt=document.getElementById('characterArt');
     document.querySelectorAll('.charBtn').forEach(btn=>btn.onclick=()=>{
+      const key=btn.dataset.name;
+      const data=charData[key];
       document.querySelectorAll('.charBtn').forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
-      document.getElementById('charName').textContent=btn.dataset.name;
-      document.getElementById('charText').textContent=charData[btn.dataset.name];
+      characterArt.style.opacity='0';
+      setTimeout(()=>{
+        characterArt.dataset.character=key;
+        characterArt.style.opacity='1';
+      },160);
+      document.getElementById('charName').textContent=key;
+      document.getElementById('charText').textContent=data.text;
+      document.getElementById('charRole').textContent=data.role;
+      document.getElementById('charStatus').textContent=data.status;
+      document.getElementById('charAffiliation').textContent=data.affiliation;
+      document.getElementById('charVersion').textContent=data.version;
     });
 
     const hero=document.querySelector('.hero__image');
