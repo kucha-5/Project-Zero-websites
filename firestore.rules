@@ -1,0 +1,26 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /preRegistrations/{registrationId} {
+      allow create: if
+        !exists(/databases/$(database)/documents/preRegistrations/$(registrationId))
+        && request.resource.data.keys().hasOnly([
+          'email',
+          'platform',
+          'source',
+          'status',
+          'createdAt'
+        ])
+        && request.resource.data.email is string
+        && request.resource.data.email.size() >= 5
+        && request.resource.data.email.size() <= 254
+        && request.resource.data.platform in ['PC', 'iOS', 'Android']
+        && request.resource.data.source == 'official-website'
+        && request.resource.data.status == 'pre-registered'
+        && request.resource.data.createdAt == request.time;
+
+      allow read, update, delete: if false;
+    }
+  }
+}

@@ -537,6 +537,69 @@
       .worldVisual{min-height:420px}
       .mediaHero{min-height:420px}.roadmapTrack{grid-template-columns:1fr}.roadmapItem{border-right:0;border-bottom:1px solid var(--line)}.roadmapItem:last-child{border-bottom:0}.ctaPanel{grid-template-columns:1fr}
     }
+
+    .registerModal{
+      position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
+      padding:24px;background:rgba(4,4,9,.8);backdrop-filter:blur(12px);
+      opacity:0;visibility:hidden;transition:opacity .25s ease,visibility .25s ease
+    }
+    .registerModal.open{opacity:1;visibility:visible}
+    .registerDialog{
+      position:relative;width:min(560px,100%);max-height:92vh;overflow:auto;
+      padding:clamp(28px,5vw,48px);border:1px solid rgba(255,255,255,.16);
+      background:linear-gradient(145deg,#1c1b31,#10101b 72%);
+      box-shadow:0 30px 100px rgba(0,0,0,.55)
+    }
+    .registerDialog::before{
+      content:"";position:absolute;inset:0 0 auto;height:3px;
+      background:linear-gradient(90deg,var(--violet),transparent)
+    }
+    .registerClose{
+      position:absolute;right:18px;top:14px;width:42px;height:42px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:#fff;font-size:26px;cursor:pointer;transition:.2s
+    }
+    .registerClose:hover{background:#fff;color:#111}
+    .registerTitle{margin:12px 0 6px;font-size:clamp(40px,7vw,68px);letter-spacing:-.055em}
+    .registerIntro{margin:0 0 28px;color:var(--muted)}
+    .registerForm{display:grid;gap:20px}
+    .registerField,.platformField{display:grid;gap:10px}
+    .registerField>span,.platformField legend{
+      font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#c4c0d2
+    }
+    .registerField input{
+      width:100%;padding:16px 17px;border:1px solid rgba(255,255,255,.18);
+      background:#242239;color:#fff;outline:none;font-size:15px
+    }
+    .registerField input:focus{
+      border-color:var(--violet);box-shadow:0 0 0 3px rgba(185,178,255,.1)
+    }
+    .platformField{margin:0;padding:0;border:0}
+    .platformOptions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .platformOptions label{cursor:pointer}
+    .platformOptions input{position:absolute;opacity:0;pointer-events:none}
+    .platformOptions span{
+      display:block;padding:15px 10px;text-align:center;border:1px solid rgba(255,255,255,.17);
+      background:rgba(255,255,255,.035);font-size:11px;letter-spacing:.13em;transition:.2s
+    }
+    .platformOptions input:checked+span{
+      background:var(--violet);border-color:var(--violet);color:#111;
+      box-shadow:0 0 24px rgba(185,178,255,.24)
+    }
+    .consentField{
+      display:flex;gap:10px;align-items:flex-start;color:#aaa7b8;font-size:12px;line-height:1.55
+    }
+    .consentField input{margin-top:3px;accent-color:var(--violet)}
+    .registerSubmit{width:100%;cursor:pointer}
+    .registerSubmit:disabled{opacity:.55;cursor:wait;transform:none}
+    .registerStatus{min-height:22px;margin:0;font-size:13px}
+    .registerStatus.success{color:#b9ff9d}
+    .registerStatus.error{color:#ffaaa8}
+    body.modalOpen{overflow:hidden}
+    @media(max-width:540px){
+      .platformOptions{grid-template-columns:1fr}
+      .registerDialog{padding:32px 22px}
+    }
+
     @media(prefers-reduced-motion:reduce){
       html{scroll-behavior:auto}
       *,*::before,*::after{animation:none!important;transition:none!important}
@@ -593,7 +656,7 @@ COUNTDOWN • TBA
 </div>
 </div>
 <div class="actions">
-          <a class="btn btn--solid" href="#feedback">PRE-REGISTER</a>
+          <button class="btn btn--solid js-open-register" type="button">PRE-REGISTER</button>
           <a class="btn btn--ghost" href="#world">DISCOVER THE WORLD</a>
         </div>
       </div>
@@ -872,7 +935,7 @@ COUNTDOWN • TBA
       <div class="feedbackContent reveal">
         <div class="eyebrow">PRE-REGISTRATION</div>
         <h2>Pre-register<br>for Open Alpha.</h2>
-        <p>Leave your email and preferred platform. You can connect this form to your own backend or Google Forms later.</p>
+        <p>Enter your email and select the device you plan to use for the Open Alpha.</p>
         <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:24px">
 <div style="padding:10px 14px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);font-size:10px;letter-spacing:.15em">
 OPEN ALPHA • VERSION 0.1
@@ -882,12 +945,48 @@ COUNTDOWN • TBA
 </div>
 </div>
 <div class="actions">
-          <a class="btn btn--solid" href="#">DOWNLOAD — SOON</a>
-          <a class="btn btn--ghost" href="#">SURVEY — SOON</a>
+          <button class="btn btn--solid js-open-register" type="button">PRE-REGISTER</button>
         </div>
       </div>
     </section>
   </main>
+
+
+  <div id="registerModal" class="registerModal" aria-hidden="true">
+    <div class="registerDialog" role="dialog" aria-modal="true" aria-labelledby="registerTitle">
+      <button id="closeRegister" class="registerClose" type="button" aria-label="Close">×</button>
+      <div class="eyebrow">OPEN ALPHA</div>
+      <h3 id="registerTitle" class="registerTitle">Pre-register</h3>
+      <p class="registerIntro">Enter your email and choose your device.</p>
+
+      <form id="registerForm" class="registerForm" novalidate>
+        <label class="registerField">
+          <span>Email address</span>
+          <input id="registerEmail" name="email" type="email" autocomplete="email"
+            placeholder="name@example.com" maxlength="254" required>
+        </label>
+
+        <fieldset class="platformField">
+          <legend>Device</legend>
+          <div class="platformOptions">
+            <label><input type="radio" name="platform" value="PC" required><span>PC</span></label>
+            <label><input type="radio" name="platform" value="iOS" required><span>iOS</span></label>
+            <label><input type="radio" name="platform" value="Android" required><span>Android</span></label>
+          </div>
+        </fieldset>
+
+        <label class="consentField">
+          <input type="checkbox" required>
+          <span>I agree to receive PROJECT ZERO Open Alpha registration updates at this email.</span>
+        </label>
+
+        <button id="registerSubmit" class="btn btn--solid registerSubmit" type="submit">
+          SUBMIT REGISTRATION
+        </button>
+        <p id="registerStatus" class="registerStatus" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
 
   <footer>
     <span>© 2026 SALT FISH STUDIO</span>
@@ -995,6 +1094,115 @@ COUNTDOWN • TBA
       requestAnimationFrame(animateParticles);
     }
     resizeParticles();animateParticles();addEventListener('resize',resizeParticles);
+
+</script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+    import { getFirestore, doc, setDoc, serverTimestamp }
+      from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCha1gk_D3kqYW63d2AfILy3AoBNv6XyXA",
+      authDomain: "project-zero-256d3.firebaseapp.com",
+      projectId: "project-zero-256d3",
+      storageBucket: "project-zero-256d3.firebasestorage.app",
+      messagingSenderId: "907785881698",
+      appId: "1:907785881698:web:e6c18aa31e2cc94bf5e93b"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const modal = document.getElementById("registerModal");
+    const closeButton = document.getElementById("closeRegister");
+    const form = document.getElementById("registerForm");
+    const emailInput = document.getElementById("registerEmail");
+    const submitButton = document.getElementById("registerSubmit");
+    const status = document.getElementById("registerStatus");
+
+    function openRegistration() {
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("modalOpen");
+      status.textContent = "";
+      status.className = "registerStatus";
+      setTimeout(() => emailInput.focus(), 100);
+    }
+
+    function closeRegistration() {
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("modalOpen");
+    }
+
+    document.querySelectorAll(".js-open-register").forEach((button) => {
+      button.addEventListener("click", openRegistration);
+    });
+
+    closeButton.addEventListener("click", closeRegistration);
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) closeRegistration();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && modal.classList.contains("open")) closeRegistration();
+    });
+
+    function registrationId(email) {
+      return encodeURIComponent(email.trim().toLowerCase());
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      status.textContent = "";
+      status.className = "registerStatus";
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      const email = emailInput.value.trim().toLowerCase();
+      const platform = new FormData(form).get("platform");
+
+      submitButton.disabled = true;
+      submitButton.textContent = "SUBMITTING...";
+
+      try {
+        await setDoc(doc(db, "preRegistrations", registrationId(email)), {
+          email,
+          platform,
+          source: "official-website",
+          status: "pre-registered",
+          createdAt: serverTimestamp()
+        });
+
+        form.reset();
+        status.textContent = "Registration complete. Thank you!";
+        status.className = "registerStatus success";
+        submitButton.textContent = "REGISTERED";
+
+        setTimeout(() => {
+          submitButton.disabled = false;
+          submitButton.textContent = "SUBMIT REGISTRATION";
+        }, 1600);
+      } catch (error) {
+        console.error("Pre-registration failed:", error);
+
+        if (error?.code === "permission-denied") {
+          status.textContent = "This email may already be registered, or Firestore rules are not active.";
+        } else if (error?.code === "unavailable") {
+          status.textContent = "Registration is temporarily unavailable. Please try again.";
+        } else {
+          status.textContent = "Registration failed. Please try again.";
+        }
+
+        status.className = "registerStatus error";
+        submitButton.disabled = false;
+        submitButton.textContent = "SUBMIT REGISTRATION";
+      }
+    });
   </script>
+
 </body>
 </html>
