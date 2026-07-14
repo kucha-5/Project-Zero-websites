@@ -1,11 +1,18 @@
-# PROJECT ZERO Website — Fixed Version
+# PROJECT ZERO Website — Particle Version
 
 Upload these two files to the root of the GitHub repository:
 
 - `index.html`
 - `project-zero-alpha.jpeg`
 
-Delete or overwrite the old `index.html`.
+Replace the old `index.html` and overwrite the old image.
 
-This version does not require an `assets` folder, `style.css`, or `script.js`.
-Everything except the image is contained inside `index.html`.
+This version includes:
+- Homepage artwork
+- Loading animation
+- Side navigation
+- Scroll animations
+- Mouse parallax
+- Lightweight floating particle effect
+
+After upload, wait for GitHub Pages to redeploy and press Ctrl + F5.
