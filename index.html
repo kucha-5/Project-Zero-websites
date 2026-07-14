@@ -538,6 +538,20 @@
       .mediaHero{min-height:420px}.roadmapTrack{grid-template-columns:1fr}.roadmapItem{border-right:0;border-bottom:1px solid var(--line)}.roadmapItem:last-child{border-bottom:0}.ctaPanel{grid-template-columns:1fr}
     }
 
+
+    .floatingRegister{
+      position:fixed;right:22px;bottom:22px;z-index:120;
+      padding:14px 19px;border:1px solid rgba(255,255,255,.22);
+      background:var(--violet);color:#111;font-weight:900;
+      font-size:10px;letter-spacing:.15em;cursor:pointer;
+      box-shadow:0 12px 40px rgba(0,0,0,.35);
+      transition:transform .25s ease,box-shadow .25s ease
+    }
+    .floatingRegister:hover{
+      transform:translateY(-4px);
+      box-shadow:0 18px 48px rgba(185,178,255,.28)
+    }
+
     .registerModal{
       position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
       padding:24px;background:rgba(4,4,9,.8);backdrop-filter:blur(12px);
@@ -629,7 +643,6 @@
       <a href="#news">NEWS</a>
       <a href="#roadmap">ROADMAP</a>
       <a href="#faq">FAQ</a>
-      <a href="#feedback">FEEDBACK</a>
     </nav>
     <div class="rail__status"><i></i>OPEN ALPHA</div>
   </aside>
@@ -929,26 +942,6 @@ COUNTDOWN • TBA
     </article>
   </div>
 </section>
-
-<section class="feedback" id="feedback">
-      <div class="sectionNo">11 / FEEDBACK</div>
-      <div class="feedbackContent reveal">
-        <div class="eyebrow">PRE-REGISTRATION</div>
-        <h2>Pre-register<br>for Open Alpha.</h2>
-        <p>Enter your email and select the device you plan to use for the Open Alpha.</p>
-        <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:24px">
-<div style="padding:10px 14px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);font-size:10px;letter-spacing:.15em">
-OPEN ALPHA • VERSION 0.1
-</div>
-<div style="padding:10px 14px;border:1px solid rgba(185,178,255,.35);background:rgba(185,178,255,.08);font-size:10px;letter-spacing:.15em">
-COUNTDOWN • TBA
-</div>
-</div>
-<div class="actions">
-          <button class="btn btn--solid js-open-register" type="button">PRE-REGISTER</button>
-        </div>
-      </div>
-    </section>
   </main>
 
 
@@ -987,6 +980,11 @@ COUNTDOWN • TBA
       </form>
     </div>
   </div>
+
+
+  <button class="floatingRegister js-open-register" type="button" aria-label="Pre-register for Open Alpha">
+    PRE-REGISTER
+  </button>
 
   <footer>
     <span>© 2026 SALT FISH STUDIO</span>
@@ -1095,6 +1093,41 @@ COUNTDOWN • TBA
     }
     resizeParticles();animateParticles();addEventListener('resize',resizeParticles);
 
+
+    const registrationModal=document.getElementById("registerModal");
+    const registrationClose=document.getElementById("closeRegister");
+    const registrationEmail=document.getElementById("registerEmail");
+    const registrationStatus=document.getElementById("registerStatus");
+
+    function openRegistrationModal(){
+      registrationModal.classList.add("open");
+      registrationModal.setAttribute("aria-hidden","false");
+      document.body.classList.add("modalOpen");
+      registrationStatus.textContent="";
+      registrationStatus.className="registerStatus";
+      setTimeout(()=>registrationEmail.focus(),100);
+    }
+
+    function closeRegistrationModal(){
+      registrationModal.classList.remove("open");
+      registrationModal.setAttribute("aria-hidden","true");
+      document.body.classList.remove("modalOpen");
+    }
+
+    document.querySelectorAll(".js-open-register").forEach(button=>{
+      button.addEventListener("click",openRegistrationModal);
+    });
+
+    registrationClose.addEventListener("click",closeRegistrationModal);
+    registrationModal.addEventListener("click",event=>{
+      if(event.target===registrationModal) closeRegistrationModal();
+    });
+    document.addEventListener("keydown",event=>{
+      if(event.key==="Escape"&&registrationModal.classList.contains("open")){
+        closeRegistrationModal();
+      }
+    });
+
 </script>
 
   <script type="module">
@@ -1114,39 +1147,10 @@ COUNTDOWN • TBA
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const modal = document.getElementById("registerModal");
-    const closeButton = document.getElementById("closeRegister");
     const form = document.getElementById("registerForm");
     const emailInput = document.getElementById("registerEmail");
     const submitButton = document.getElementById("registerSubmit");
     const status = document.getElementById("registerStatus");
-
-    function openRegistration() {
-      modal.classList.add("open");
-      modal.setAttribute("aria-hidden", "false");
-      document.body.classList.add("modalOpen");
-      status.textContent = "";
-      status.className = "registerStatus";
-      setTimeout(() => emailInput.focus(), 100);
-    }
-
-    function closeRegistration() {
-      modal.classList.remove("open");
-      modal.setAttribute("aria-hidden", "true");
-      document.body.classList.remove("modalOpen");
-    }
-
-    document.querySelectorAll(".js-open-register").forEach((button) => {
-      button.addEventListener("click", openRegistration);
-    });
-
-    closeButton.addEventListener("click", closeRegistration);
-    modal.addEventListener("click", (event) => {
-      if (event.target === modal) closeRegistration();
-    });
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && modal.classList.contains("open")) closeRegistration();
-    });
 
     function registrationId(email) {
       return encodeURIComponent(email.trim().toLowerCase());
@@ -1190,7 +1194,7 @@ COUNTDOWN • TBA
         console.error("Pre-registration failed:", error);
 
         if (error?.code === "permission-denied") {
-          status.textContent = "This email may already be registered, or Firestore rules are not active.";
+          status.textContent = "This email is already registered, or Firestore access is not configured yet.";
         } else if (error?.code === "unavailable") {
           status.textContent = "Registration is temporarily unavailable. Please try again.";
         } else {

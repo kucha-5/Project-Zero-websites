@@ -1,24 +1,15 @@
-# PROJECT ZERO Website V8 — Firebase Pre-registration
+# PROJECT ZERO Website V9 — Modal and Navigation Fix
 
-The popup now submits directly to Cloud Firestore.
+Fixed:
+- Removed the Feedback navigation item.
+- Removed the entire Feedback page section.
+- PRE-REGISTER no longer scrolls to another section.
+- Clicking PRE-REGISTER opens the popup immediately.
+- Added a fixed PRE-REGISTER button available on every page.
+- Popup open/close behavior no longer depends on Firebase loading.
+- Firebase is only used when the form is submitted.
 
-Collection:
-`preRegistrations`
-
-Stored fields:
-- email
-- platform: PC / iOS / Android
-- source
-- status
-- createdAt (server timestamp)
-
-## Firebase setup
-
-1. Open Firebase Console.
-2. Open Firestore Database and create the database.
-3. Open the Rules tab.
-4. Paste the contents of `firestore.rules`.
-5. Publish.
-6. Upload the website files to GitHub Pages.
-
-The Firebase web configuration is public by design. Security depends on Firestore Rules, so do not leave Firestore in open test mode.
+Firebase setup:
+1. Create Firestore Database.
+2. Paste and publish `firestore.rules`.
+3. Upload the website files to GitHub Pages.
