@@ -1,35 +1,11 @@
-# PROJECT ZERO Website
+# PROJECT ZERO Website — Fixed Version
 
-A static GitHub Pages website for the PROJECT ZERO Open Alpha.
-
-## Upload to GitHub
-
-Upload all files and folders in this package to the root of your GitHub repository:
+Upload these two files to the root of the GitHub repository:
 
 - `index.html`
-- `style.css`
-- `script.js`
-- `assets/`
+- `project-zero-alpha.jpeg`
 
-Then open the repository's **Settings → Pages** and publish from the `main` branch and `/ (root)` folder.
+Delete or overwrite the old `index.html`.
 
-## Change the download and survey buttons
-
-Open `index.html` and find:
-
-```html
-<a class="button button--solid" href="#" aria-disabled="true">DOWNLOAD — SOON</a>
-<a class="button button--ghost" href="#" aria-disabled="true">SURVEY — SOON</a>
-```
-
-Replace `#` with your real links and remove `aria-disabled="true"`.
-
-## Replace text
-
-All visible website text is inside `index.html`. You can edit it directly in GitHub.
-
-## Image
-
-The main visual is located at:
-
-`assets/project-zero-alpha.jpeg`
+This version does not require an `assets` folder, `style.css`, or `script.js`.
+Everything except the image is contained inside `index.html`.
