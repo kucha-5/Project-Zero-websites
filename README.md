@@ -1,18 +1,40 @@
-# PROJECT ZERO Website — Particle Version
+# PROJECT ZERO Official Website
 
-Upload these two files to the root of the GitHub repository:
+This package contains a complete single-page GitHub Pages website inspired by modern commercial game websites, while using PROJECT ZERO's own visual identity.
+
+## Upload
+
+Upload these files to the root of your GitHub repository:
 
 - `index.html`
 - `project-zero-alpha.jpeg`
 
-Replace the old `index.html` and overwrite the old image.
+Overwrite the old versions.
 
-This version includes:
-- Homepage artwork
-- Loading animation
-- Side navigation
-- Scroll animations
-- Mouse parallax
-- Lightweight floating particle effect
+## Current sections
 
-After upload, wait for GitHub Pages to redeploy and press Ctrl + F5.
+- Home
+- World
+- Characters
+- Gameplay
+- Media
+- News
+- FAQ
+- Feedback
+
+## Edit links
+
+Inside `index.html`, find:
+
+- `DOWNLOAD — SOON`
+- `SURVEY — SOON`
+
+Replace the `href="#"` values with the real links.
+
+## Edit character information
+
+Search for `charData` near the bottom of `index.html`.
+
+## Replace artwork later
+
+Keep the filename `project-zero-alpha.jpeg`, or update the image filename in `index.html`.
