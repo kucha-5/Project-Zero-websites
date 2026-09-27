@@ -1,15 +1,35 @@
-# PROJECT ZERO Website V9 — Modal and Navigation Fix
+# PROJECT ZERO Official Website
 
-Fixed:
-- Removed the Feedback navigation item.
-- Removed the entire Feedback page section.
-- PRE-REGISTER no longer scrolls to another section.
-- Clicking PRE-REGISTER opens the popup immediately.
-- Added a fixed PRE-REGISTER button available on every page.
-- Popup open/close behavior no longer depends on Firebase loading.
-- Firebase is only used when the form is submitted.
+First major-update build for the Project Zero official website.
 
-Firebase setup:
-1. Create Firestore Database.
-2. Paste and publish `firestore.rules`.
-3. Upload the website files to GitHub Pages.
+## Included
+
+- Full-screen looping HOME film with static key-visual loading and fallback
+- HOME, WORLD, CHARACTERS, GAMEPLAY, NEWS, MEDIA, COMMUNITY, and footer
+- Responsive desktop/mobile navigation
+- Character showcase for The Hermit, Ailo, Kane, and Flora
+- Chinese character names and a reserved interface for future official in-game model media
+- WORLD archive artwork with restrained spatial-drift motion
+- Final PROJECT / ZERO pointer-and-touch drag assembly using the original supplied artwork
+- English/Chinese interface switching
+- Official Discord, X, PC itch.io, and mobile itch.io links
+- Full-width PROJECT / ZERO comparison slider inspired by cinematic dual-view layouts
+- Keyboard-accessible controls and reduced-motion support
+- Existing Firebase pre-registration flow and Firestore security rules
+
+## Assets
+
+- `assets/videos/home-bg.mp4` — HOME background film
+- `assets/audio/dystopian-boss-battle.mp3` — full looping background music; the video track remains muted
+- `assets/images/project-zero-alpha.jpeg` — loading/fallback key visual
+- `assets/images/characters/` — official character portraits
+
+The `IN-GAME MODEL` card restores the procedural Canvas battle-model renderer adapted from the supplied game `game.js`. It changes with the selected character and does not replace the official large portrait.
+
+## Preview
+
+Serve this directory with any static web server, then open `index.html`. Direct file opening works for most presentation features, but Firebase registration requires a hosted origin and configured Firestore.
+
+## Firebase
+
+Publish `firestore.rules` in the Firebase console before accepting registrations. The rule allows create-only access to validated pre-registration records and denies public reads, updates, and deletes.

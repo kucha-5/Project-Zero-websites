@@ -1,54 +1,52 @@
-const loader = document.getElementById('loader');
-const count = document.getElementById('loaderCount');
-const bar = document.getElementById('loaderBar');
-let progress = 0;
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches; let language='en';
+const loader = document.getElementById('loader'); const loaderCount = document.getElementById('loaderCount'); const loaderBar = document.getElementById('loaderBar'); const heroVideo = document.getElementById('heroVideo'); const backgroundMusic = document.getElementById('backgroundMusic'); let progress = 0;
+const finishLoading = () => { progress = 100; loaderCount.textContent = '100'; loaderBar.style.width = '100%'; heroVideo.classList.toggle('ready', heroVideo.readyState >= 2); window.setTimeout(() => loader.classList.add('hidden'), reducedMotion ? 0 : 350); };
+const progressTimer = window.setInterval(() => { progress = Math.min(progress + Math.ceil(Math.random() * 8), 92); loaderCount.textContent = String(progress).padStart(2, '0'); loaderBar.style.width = `${progress}%`; }, 70);
+heroVideo.addEventListener('canplay', () => { heroVideo.classList.add('ready'); clearInterval(progressTimer); finishLoading(); }, { once: true }); heroVideo.addEventListener('error', () => { clearInterval(progressTimer); finishLoading(); }, { once: true }); window.addEventListener('load', () => window.setTimeout(() => { if (!loader.classList.contains('hidden')) { clearInterval(progressTimer); finishLoading(); } }, 1800));
+const reveals = document.querySelectorAll('.reveal'); const revealObserver = new IntersectionObserver((entries) => entries.forEach((entry) => { if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); } }), { threshold: 0.12 }); reveals.forEach((item) => revealObserver.observe(item));
+const navLinks = [...document.querySelectorAll('.site-nav a')]; const navObserver = new IntersectionObserver((entries) => entries.forEach((entry) => { if (entry.isIntersecting) navLinks.forEach((link) => link.classList.toggle('active', link.hash === `#${entry.target.id}`)); }), { rootMargin: '-44% 0px -50%' }); document.querySelectorAll('main section[id]').forEach((section) => navObserver.observe(section));
+const menuButton = document.getElementById('menuButton'); menuButton.addEventListener('click', () => { const open = document.body.classList.toggle('menu-open'); menuButton.setAttribute('aria-expanded', String(open)); }); navLinks.forEach((link) => link.addEventListener('click', () => { document.body.classList.remove('menu-open'); menuButton.setAttribute('aria-expanded', 'false'); }));
+heroVideo.muted = true;
+const soundToggle = document.getElementById('soundToggle'); soundToggle.addEventListener('click', async () => { heroVideo.muted = true; if (backgroundMusic.paused) { await backgroundMusic.play().catch(() => {}); } else { backgroundMusic.pause(); } const musicOn = !backgroundMusic.paused; soundToggle.setAttribute('aria-pressed', String(musicOn)); soundToggle.querySelector('b').textContent = musicOn ? 'MUSIC ON' : 'MUSIC OFF'; });
+document.getElementById('replayFilm').addEventListener('click', () => { heroVideo.currentTime = 0; heroVideo.play().catch(() => {}); document.getElementById('home').scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' }); });
+const characters = [
+  { name:'THE\nHERMIT',cn:'隐者',modelRole:4,file:'FILE // 00-H',image:'assets/images/characters/hermit.png',alt:'Official portrait of The Hermit',quote:'“The road remembers what I cannot.”',role:'WANDERER',roleZh:'流浪者',status:'PLAYABLE',statusZh:'可操作',affiliation:'UNKNOWN',affiliationZh:'未知',record:'OPEN ALPHA',bio:'A traveler with no memory of the past. Known only as the Hermit, they continue onward toward a purpose that has yet to be revealed.',bioZh:'一位失去过往记忆的旅人。人们只称其为“隐者”，而其仍向着尚未揭晓的目的前行。'},
+  { name:'AILO',cn:'艾洛',modelRole:1,file:'FILE // 01-A',image:'assets/images/characters/ailo.png',alt:'Official portrait of Ailo',quote:'“Listen closely. The noise always leaves a pattern.”',role:'SEEKER',roleZh:'探寻者',status:'DISCLOSED',statusZh:'已公开',affiliation:'UNRECORDED',affiliationZh:'未记录',record:'PORTRAIT 01',bio:'A sharp-eyed traveler whose calm presence conceals an instinct for patterns, traces, and the things others overlook.',bioZh:'一位目光敏锐的旅人。平静的外表下，藏着对规律、痕迹与被忽视之物的直觉。'},
+  { name:'KANE',cn:'凯恩',modelRole:0,file:'FILE // 02-K',image:'assets/images/characters/kane.png',alt:'Official portrait of Kane',quote:'“If the path closes, I make another.”',role:'VANGUARD',roleZh:'先锋',status:'DISCLOSED',statusZh:'已公开',affiliation:'UNRECORDED',affiliationZh:'未记录',record:'PORTRAIT 02',bio:'A guarded fighter carrying the marks of older battles. Kane moves forward with purpose, even when the world gives him no safe route.',bioZh:'一名带着旧战伤痕、始终保持戒备的战士。即使世界没有留下安全的道路，凯恩仍有目的地向前。'},
+  { name:'FLORA',cn:'芙洛拉',modelRole:3,file:'FILE // 03-F',image:'assets/images/characters/flora.png',alt:'Official portrait of Flora',quote:'“Even winter has a sound when it breaks.”',role:'SPECIALIST',roleZh:'术士',status:'DISCLOSED',statusZh:'已公开',affiliation:'UNRECORDED',affiliationZh:'未记录',record:'PORTRAIT 03',bio:'Quiet, observant, and difficult to read, Flora brings an unexpected warmth to the cold edges of the journey.',bioZh:'安静、敏锐而难以看透。芙洛拉为旅途冰冷的边缘带来一丝意外的温度。'}
+];
+let characterIndex = 0; const e = { art: document.getElementById('characterArt'), index: document.getElementById('characterIndex'), file: document.getElementById('characterFile'), name: document.getElementById('characterName'), cn: document.getElementById('characterCn'), quote: document.getElementById('characterQuote'), role: document.getElementById('characterRole'), status: document.getElementById('characterStatus'), affiliation: document.getElementById('characterAffiliation'), record: document.getElementById('characterRecord'), bio: document.getElementById('characterBio'), dots: document.getElementById('characterDots') };
+characters.forEach((character, index) => { const button = document.createElement('button'); button.type = 'button'; button.setAttribute('aria-label', `Show ${character.name.replace('\n', ' ')}`); button.addEventListener('click', () => showCharacter(index)); e.dots.appendChild(button); });
+function showCharacter(nextIndex) { characterIndex = (nextIndex + characters.length) % characters.length; const character = characters[characterIndex]; const stage = document.getElementById('characterShowcase'); stage.classList.add('switching'); window.setTimeout(() => { e.art.src = character.image; e.art.alt = character.alt; e.index.textContent = `${String(characterIndex + 1).padStart(2, '0')} / ${String(characters.length).padStart(2, '0')}`; e.file.textContent = character.file; e.name.innerHTML = character.name.replace('\n', '<br>'); e.cn.textContent = character.cn; e.quote.textContent = character.quote; e.role.textContent = language==='zh'?character.roleZh:character.role; e.status.textContent = language==='zh'?character.statusZh:character.status; e.affiliation.textContent = language==='zh'?character.affiliationZh:character.affiliation; e.record.textContent = character.record; e.bio.textContent = language==='zh'?character.bioZh:character.bio; [...e.dots.children].forEach((dot, index) => dot.classList.toggle('active', index === characterIndex)); stage.classList.remove('switching'); }, reducedMotion ? 0 : 220); }
+document.getElementById('characterPrev').addEventListener('click', () => showCharacter(characterIndex - 1)); document.getElementById('characterNext').addEventListener('click', () => showCharacter(characterIndex + 1)); showCharacter(0);
 
-const timer = setInterval(() => {
-  progress += Math.floor(Math.random() * 9) + 3;
-  if (progress >= 100) {
-    progress = 100;
-    clearInterval(timer);
-    setTimeout(() => loader.classList.add('hidden'), 350);
-  }
-  count.textContent = progress;
-  bar.style.width = `${progress}%`;
-}, 55);
+// Adapted from the supplied game's drawPortraitBasedBattleModel() renderer.
+const modelCanvas = document.getElementById('characterModel'); const modelCtx = modelCanvas?.getContext('2d');
+const modelPresets = {
+  0:{skin:'#efd3c5',hair:'#6d4731',outer:'#17191f',shade:'#090b10',inner:'#b59660',innerShade:'#785c38',accent:'#8f2724',trim:'#d8dbe2',boot:'#5b2b24',weapon:'#e9edf3',edge:'#ffbe5c'},
+  1:{skin:'#efd5c6',hair:'#26c7b5',outer:'#278f7c',shade:'#145449',inner:'#788f8b',innerShade:'#354a48',accent:'#b18562',trim:'#dce8e5',boot:'#172f2e',weapon:'#d9a735',edge:'#74ffb7'},
+  3:{skin:'#efd8cf',hair:'#5554a4',outer:'#f2f4f8',shade:'#b9c4d5',inner:'#f8fafc',innerShade:'#25364a',accent:'#1d2f45',trim:'#fff',boot:'#6d4028',weapon:'#88d8ff',edge:'#d9f4ff'},
+  4:{skin:'#e7d2c8',hair:'#111318',outer:'#17191d',shade:'#07080b',inner:'#eef1f4',innerShade:'#6d727b',accent:'#2a2e35',trim:'#fff',boot:'#111318',weapon:'#dfe6ef',edge:'#939aa5'}
+};
+function drawGameModel(roleId,time){
+  const c=modelCtx,p=modelPresets[roleId],bob=Math.sin(time*.002+roleId)*2,turn=Math.sin(time*.0013+roleId)*.035;c.clearRect(0,0,modelCanvas.width,modelCanvas.height);c.save();c.translate(135,139+bob);c.fillStyle='rgba(3,8,15,.72)';c.beginPath();c.ellipse(0,73,66,17,0,0,Math.PI*2);c.fill();c.strokeStyle=p.edge;c.globalAlpha=.55;c.lineWidth=2;c.stroke();c.globalAlpha=1;c.rotate(turn);c.scale(2.55,2.55);
+  c.fillStyle=p.shade;c.beginPath();c.moveTo(-18,-4);c.quadraticCurveTo(-25,10,-19,22);c.lineTo(-4,18);c.lineTo(0,4);c.closePath();c.fill();c.fillStyle=p.outer;c.beginPath();c.moveTo(-17,-7);c.quadraticCurveTo(-23,6,-17,19);c.lineTo(-3,15);c.lineTo(0,1);c.closePath();c.fill();c.beginPath();c.moveTo(3,-8);c.quadraticCurveTo(18,-5,21,13);c.lineTo(12,20);c.lineTo(2,13);c.closePath();c.fill();
+  c.fillStyle=p.inner;c.beginPath();c.moveTo(-8,-9);c.lineTo(9,-9);c.lineTo(11,13);c.lineTo(-9,13);c.closePath();c.fill();c.fillStyle=p.innerShade;c.fillRect(1,-8,8,20);c.fillStyle=p.accent;c.fillRect(-10,7,20,4);c.fillStyle=p.trim;c.fillRect(-2,-9,4,13);c.fillStyle=p.innerShade;c.fillRect(-10,13,8,9);c.fillRect(3,13,8,9);c.fillStyle=p.boot;c.fillRect(-11,20,9,5);c.fillRect(3,20,9,5);
+  c.fillStyle=p.skin;c.beginPath();c.arc(0,-15,9,0,Math.PI*2);c.fill();c.fillStyle=p.hair;c.beginPath();c.arc(0,-18,10,Math.PI,Math.PI*2);c.lineTo(8,-13);c.lineTo(3,-15);c.lineTo(-1,-12);c.lineTo(-5,-15);c.lineTo(-9,-13);c.closePath();c.fill();
+  if(roleId===0){c.fillStyle='#d9dde5';c.beginPath();c.moveTo(-10,-8);c.lineTo(-3,-5);c.lineTo(-8,1);c.closePath();c.fill();c.fillStyle=p.accent;c.fillRect(-18,-2,8,4)}
+  if(roleId===1){c.fillStyle='#394746';c.fillRect(-9,-28,18,5);c.fillStyle=p.accent;for(let i=-2;i<=2;i++){c.beginPath();c.arc(i*3,-7,2.1,0,Math.PI*2);c.fill()}}
+  if(roleId===3){c.fillStyle='#f7f8fb';c.beginPath();c.moveTo(-8,-26);c.lineTo(-3,-32);c.lineTo(0,-25);c.lineTo(4,-32);c.lineTo(9,-25);c.closePath();c.fill();c.fillStyle='rgba(242,244,248,.94)';c.beginPath();c.moveTo(-13,-9);c.quadraticCurveTo(-27,5,-21,23);c.lineTo(-8,17);c.lineTo(0,2);c.lineTo(9,17);c.lineTo(21,22);c.quadraticCurveTo(27,4,13,-9);c.closePath();c.fill();c.strokeStyle='#9acdec';c.stroke()}
+  if(roleId===4){c.fillStyle='#fff';c.beginPath();c.moveTo(-5,-9);c.lineTo(0,-3);c.lineTo(5,-9);c.closePath();c.fill();c.fillStyle='#0b0d11';c.beginPath();c.moveTo(-13,7);c.lineTo(-17,29);c.lineTo(-3,23);c.lineTo(0,10);c.closePath();c.fill();c.beginPath();c.moveTo(3,8);c.lineTo(17,29);c.lineTo(15,11);c.lineTo(8,3);c.closePath();c.fill()}
+  c.strokeStyle=p.edge;c.lineWidth=1.2;c.beginPath();c.moveTo(-16,-5);c.lineTo(-17,16);c.moveTo(11,-5);c.lineTo(14,17);c.stroke();c.save();c.rotate(Math.sin(time*.0017)*.18);if(roleId===1){c.strokeStyle='#74572e';c.lineWidth=4;c.beginPath();c.moveTo(7,4);c.lineTo(30,-9);c.stroke();c.fillStyle='#d9a735';c.beginPath();c.arc(33,-11,6,0,Math.PI*2);c.fill();c.strokeStyle='#74ffb7';c.lineWidth=2;c.beginPath();c.arc(33,-11,10,0,Math.PI*2);c.stroke()}else if(roleId===3){c.strokeStyle='#d9e7f2';c.lineWidth=3;c.beginPath();c.moveTo(7,5);c.lineTo(30,-13);c.stroke();c.fillStyle='#705fc7';c.beginPath();c.moveTo(28,-18);c.lineTo(39,-13);c.lineTo(29,-7);c.closePath();c.fill()}else if(roleId===4){c.strokeStyle='#dfe6ef';c.lineWidth=3;c.beginPath();c.moveTo(13,0);c.lineTo(32,-5);c.moveTo(-13,10);c.lineTo(-25,17);c.stroke()}else{c.strokeStyle=p.weapon;c.lineWidth=4;c.beginPath();c.moveTo(15,0);c.lineTo(37,-3);c.stroke()}c.restore();c.restore();
+}
+function animateGameModel(time){drawGameModel(characters[characterIndex].modelRole,time);requestAnimationFrame(animateGameModel)} if(modelCanvas) requestAnimationFrame(animateGameModel);
 
-const reveals = document.querySelectorAll('.reveal');
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) entry.target.classList.add('visible');
-  });
-}, { threshold: 0.12 });
-reveals.forEach((item) => revealObserver.observe(item));
+const assemblyStage=document.getElementById('assemblyStage');const dualityHandle=document.getElementById('dualityHandle');let splitValue=50,splitDragging=false;
+function setSplit(value){splitValue=Math.max(8,Math.min(92,value));assemblyStage.style.setProperty('--split',`${splitValue}%`);dualityHandle.setAttribute('aria-valuenow',String(Math.round(splitValue)))}
+function splitFromPointer(event){const rect=assemblyStage.getBoundingClientRect();setSplit((event.clientX-rect.left)/rect.width*100)}
+dualityHandle.addEventListener('pointerdown',event=>{splitDragging=true;dualityHandle.setPointerCapture?.(event.pointerId);splitFromPointer(event);event.preventDefault()});dualityHandle.addEventListener('pointermove',event=>{if(splitDragging)splitFromPointer(event)});dualityHandle.addEventListener('pointerup',event=>{splitDragging=false;dualityHandle.releasePointerCapture?.(event.pointerId)});dualityHandle.addEventListener('pointercancel',()=>{splitDragging=false});assemblyStage.addEventListener('pointerdown',event=>{if(event.target!==dualityHandle)splitFromPointer(event)});dualityHandle.addEventListener('keydown',event=>{if(event.key==='ArrowLeft'){setSplit(splitValue-3);event.preventDefault()}if(event.key==='ArrowRight'){setSplit(splitValue+3);event.preventDefault()}if(event.key==='Home')setSplit(8);if(event.key==='End')setSplit(92)});setSplit(50);
 
-const sections = [...document.querySelectorAll('section[id]')];
-const links = [...document.querySelectorAll('.rail__nav a')];
-
-const navObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (!entry.isIntersecting) return;
-    links.forEach((link) => {
-      link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`);
-    });
-  });
-}, { rootMargin: '-45% 0px -45% 0px' });
-sections.forEach((section) => navObserver.observe(section));
-
-const menuButton = document.getElementById('menuButton');
-menuButton.addEventListener('click', () => {
-  const open = document.body.classList.toggle('menu-open');
-  menuButton.setAttribute('aria-expanded', String(open));
-});
-links.forEach((link) => link.addEventListener('click', () => {
-  document.body.classList.remove('menu-open');
-  menuButton.setAttribute('aria-expanded', 'false');
-}));
-
-const hero = document.querySelector('.hero__image');
-window.addEventListener('pointermove', (event) => {
-  if (window.innerWidth < 900) return;
-  const x = (event.clientX / window.innerWidth - 0.5) * 8;
-  const y = (event.clientY / window.innerHeight - 0.5) * 8;
-  hero.style.transform = `scale(1.07) translate3d(${x}px, ${y}px, 0)`;
-});
+const translations={en:{preRegister:'PRE-REGISTER <span>↗</span>',heroLead:'Trace the fragments. Face what remains. Begin a journey through a fractured world where every encounter leaves a mark.',playPc:'PLAY PC DEMO <span>↗</span>',watchFilm:'WATCH THE FILM <span>▶</span>',communityLead:'Register for Open Alpha updates and follow the project as new characters, world files, and test information are released.',joinArchive:'JOIN THE ARCHIVE <span>↗</span>',entity:'ENTITY // CRYSTAL',imaginary:'IMAGINARY // NON-ENTITY',dragCompare:'DRAG TO OBSERVE BOTH SIDES // PROJECT / ZERO',playDemo:'PLAY DEMO'},zh:{preRegister:'预约登记 <span>↗</span>',heroLead:'追寻碎片，直面遗留之物。踏入一个支离破碎的世界，每次相遇都会留下痕迹。',playPc:'游玩 PC 试玩版 <span>↗</span>',watchFilm:'观看影像 <span>▶</span>',communityLead:'登记 Open Alpha 更新，跟随新角色、世界档案与测试信息的逐步公开。',joinArchive:'加入档案库 <span>↗</span>',entity:'实体 // 晶体',imaginary:'虚数 // 非实体',dragCompare:'拖动中线观察两侧 // PROJECT / ZERO',playDemo:'游玩试玩版'}};
+const pageCopy={en:{'#world-title':'NOTHING HERE<br>STAYS <em>WHOLE.</em>','#characters-title':'MEET THE<br><em>WANDERERS.</em>','#gameplay-title':'YOUR WAY<br>THROUGH <em>ZERO.</em>','#news-title':'FROM THE<br><em>ARCHIVE.</em>','#media-title':'ENTER<br><em>THE WORLD.</em>','#community-title':'DON’T FACE<br>THE VOID <em>ALONE.</em>','#registerTitle':'JOIN THE<br><em>ARCHIVE.</em>'},zh:{'#world-title':'这里的一切<br>都无法保持<em>完整。</em>','#characters-title':'与旅人们<br><em>相遇。</em>','#gameplay-title':'穿越零号<br><em>世界的方式。</em>','#news-title':'来自<br><em>档案库。</em>','#media-title':'进入<br><em>这个世界。</em>','#community-title':'不要独自<br>面对<em>虚无。</em>','#registerTitle':'加入<br><em>档案库。</em>'}};
+const navCopy={en:['HOME','WORLD','CHARACTERS','GAMEPLAY','NEWS','MEDIA','COMMUNITY'],zh:['首页','世界','角色','玩法','新闻','媒体','社区']};const langToggle=document.getElementById('langToggle');function applyLanguage(next){language=next;document.documentElement.lang=next==='zh'?'zh-CN':'en';document.querySelectorAll('[data-i18n]').forEach(node=>{const value=translations[next][node.dataset.i18n];if(value)node.innerHTML=value});Object.entries(pageCopy[next]).forEach(([selector,value])=>{const node=document.querySelector(selector);if(node)node.innerHTML=value});document.querySelectorAll('.site-nav a').forEach((node,index)=>node.textContent=navCopy[next][index]);langToggle.textContent=next==='en'?'中文':'EN';document.body.dataset.lang=next;showCharacter(characterIndex)}langToggle.addEventListener('click',()=>applyLanguage(language==='en'?'zh':'en'));applyLanguage('en');
+const modal = document.getElementById('registerModal'); const openRegister = () => { modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false'); document.body.classList.add('modal-open'); window.setTimeout(() => document.getElementById('registerEmail').focus(), 80); }; const closeRegister = () => { modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true'); document.body.classList.remove('modal-open'); }; document.querySelectorAll('.js-open-register').forEach((button) => button.addEventListener('click', openRegister)); document.getElementById('closeRegister').addEventListener('click', closeRegister); modal.addEventListener('click', (event) => { if (event.target === modal) closeRegister(); }); document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && modal.classList.contains('open')) closeRegister(); });
