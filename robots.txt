@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://kucha-5.github.io/Project-Zero-websites/sitemap.xml
