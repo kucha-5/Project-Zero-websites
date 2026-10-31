@@ -22,3 +22,6 @@
 .duality-pane img{position:absolute;top:50%;width:min(54vw,880px);height:min(68vh,700px)}.project-piece>img{left:2%;transform:translateY(-50%)}.zero-piece>img{right:2%;transform:translateY(-50%)}@media(max-width:760px){.duality-pane img{width:68vw;height:62vh}.project-piece>img{left:-4%}.zero-piece>img{right:-4%}}@media(max-width:430px){.duality-pane img{width:78vw}}
 
 .header-cta{display:flex;align-items:center;justify-content:center;text-align:center}
+
+/* V2 readability, keyboard accessibility, and reduced-motion refinements */
+:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.site-nav a,.button,.header-cta{min-height:40px}.world__copy{max-width:760px}.world__copy p{font-size:clamp(14px,1.2vw,17px);line-height:1.9}.hero__lead{font-size:clamp(14px,1.2vw,17px);line-height:1.8}.character-bio{font-size:clamp(13px,1.1vw,15px)}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}@media(max-width:760px){.world__grid{gap:28px}.world__copy{padding-bottom:12px}.hero__actions{flex-wrap:wrap}.button{min-height:44px}}
